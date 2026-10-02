@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Checkout — Aziza{% endblock %}
+{% block content %}
+
+<section class="section">
+  <div class="container container-narrow">
+    <h1 class="page-title">Checkout</h1>
+
+    <div class="checkout-summary">
+      <h2 class="section-title" style="font-size:1.2rem; margin-bottom:1rem;">Order Summary</h2>
+      {% for item in items %}
+      <div class="checkout-row">
+        <span>{{ item.product.name }} × {{ item.quantity }}</span>
+        <span>{{ item.get_total }} TND</span>
+      </div>
+      {% endfor %}
+      <div class="checkout-row checkout-total">
+        <span>Total</span>
+        <span>{{ total }} TND</span>
+      </div>
+    </div>
+
+    <form method="POST" class="checkout-form">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" name="full_name" placeholder="Your full name" required class="form-input">
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" name="address" placeholder="Delivery address" required class="form-input">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" name="phone" placeholder="+216 XX XXX XXX" required class="form-input">
+      </div>
+      <div class="form-group">
+        <label>Payment Method</label>
+        <select name="payment" class="form-input">
+          <option value="cash">Cash on Delivery</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-primary btn-large btn-full">Place Order ✓</button>
+    </form>
+
+  </div>
+</section>
+
+{% endblock %}

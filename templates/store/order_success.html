@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Order Confirmed — Aziza{% endblock %}
+{% block content %}
+
+<section class="section">
+  <div class="container container-narrow">
+    <div class="success-box">
+      <div class="success-icon">✅</div>
+      <h1>Order Confirmed!</h1>
+      <p>Thank you for your order. Your order <strong>#{{ order.id }}</strong> has been placed successfully.</p>
+      <p style="color: var(--text-muted);">We'll prepare your items and deliver them soon.</p>
+      <a href="{% url 'home' %}" class="btn-primary" style="margin-top:1.5rem;">Back to Home</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

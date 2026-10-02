@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}Aziza — Fresh & Quality{% endblock %}
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-tag">🇹🇳 Tunisia's Favorite Supermarket</p>
+    <h1 class="hero-title">Fresh Picks,<br><span>Best Prices.</span></h1>
+    <p class="hero-sub">Hundreds of quality products at your fingertips. Shop smarter with Aziza.</p>
+    <div class="hero-actions">
+      <a href="{% url 'products' %}" class="btn-primary btn-large">Shop Now →</a>
+      {% if not user.is_authenticated %}
+        <a href="{% url 'register' %}" class="hero-btn-secondary">Create free account</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-circle">🛍️</div>
+    <div class="hero-badge">🔥 Hot Deals</div>
+  </div>
+</section>
+
+<!-- PROMO STRIP -->
+<div class="promo-strip">
+  <div class="promo-item"><span class="promo-dot"></span> Free delivery on orders over 50 TND</div>
+  <div class="promo-item"><span class="promo-dot"></span> Fresh products every morning</div>
+  <div class="promo-item"><span class="promo-dot"></span> 500+ products available</div>
+  <div class="promo-item"><span class="promo-dot"></span> Cash on delivery</div>
+</div>
+
+{% if categories %}
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Shop by Category</h2>
+    <div class="categories-grid">
+      {% for category in categories %}
+      <a href="{% url 'products' %}?category={{ category.slug }}" class="category-card">
+        <span class="category-icon">🏷️</span>
+        <span>{{ category.name }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if featured %}
+<section class="section section-gray">
+  <div class="container">
+    <h2 class="section-title">🔥 Featured Products</h2>
+    <div class="products-grid">
+      {% for product in featured %}
+      <div class="product-card">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+        {% else %}
+          <div class="product-img-placeholder">🛒</div>
+        {% endif %}
+        <span class="product-badge">Featured</span>
+        <div class="product-info">
+          <p class="product-category">{{ product.category.name }}</p>
+          <h3 class="product-name">{{ product.name }}</h3>
+          <div class="product-footer">
+            <span class="product-price">{{ product.price }} TND</span>
+            {% if user.is_authenticated %}
+              <a href="{% url 'add_to_cart' product.id %}" class="btn-add">+ Add</a>
+            {% else %}
+              <a href="{% url 'login' %}" class="btn-add">+ Add</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div style="text-align:center; margin-top:2.5rem;">
+      <a href="{% url 'products' %}" class="btn-outline-red">View All Products →</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Why Shop with Aziza?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🌿</div>
+        <h3>Fresh Daily</h3>
+        <p>Products sourced fresh every morning from trusted local suppliers.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>Best Prices</h3>
+        <p>Competitive pricing and weekly deals on all your everyday essentials.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3>Easy Shopping</h3>
+        <p>Browse, add to cart, and checkout in just a few clicks.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Trusted Brand</h3>
+        <p>Aziza has been serving Tunisian families for decades with quality you can count on.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

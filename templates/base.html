@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Aziza Supermarket{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="{% url 'home' %}" class="logo">
+        <span class="logo-icon">🛒</span>
+        <span class="logo-text">Aziza</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="{% url 'products' %}">Products</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'cart' %}" class="cart-link">
+            Cart
+            {% if cart_count %}
+              <span class="cart-badge">{{ cart_count }}</span>
+            {% endif %}
+          </a>
+          <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn-outline" style="cursor:pointer; font-family:inherit;">Logout</button>
+          </form>
+          <!-- <a href="{% url 'logout' %}" class="btn-outline">Logout</a> -->
+        {% else %}
+          <a href="{% url 'login' %}">Login</a>
+          <a href="{% url 'register' %}" class="btn-primary">Register</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- MESSAGES -->
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="message message-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- MAIN -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="logo-text" style="font-size:1.2rem;">Aziza</span>
+      <p>© 2025 Aziza Supermarket Tunisia. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Products — Aziza{% endblock %}
+{% block content %}
+
+<section class="section">
+  <div class="container">
+
+    <div class="page-header">
+      <h1 class="page-title">
+        {% if selected %}{{ selected.name }}{% else %}All Products{% endif %}
+      </h1>
+      <p class="page-sub">{{ products.count }} product{{ products.count|pluralize }} available</p>
+    </div>
+
+    <!-- CATEGORY FILTER -->
+    <div class="filter-bar">
+      <a href="{% url 'products' %}" class="filter-tag {% if not selected %}active{% endif %}">All</a>
+      {% for category in categories %}
+        <a href="?category={{ category.slug }}" class="filter-tag {% if selected.slug == category.slug %}active{% endif %}">
+          {{ category.name }}
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- PRODUCTS -->
+    {% if products %}
+    <div class="products-grid">
+      {% for product in products %}
+      <div class="product-card">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+        {% else %}
+          <div class="product-img-placeholder">🛒</div>
+        {% endif %}
+        <div class="product-info">
+          <p class="product-category">{{ product.category.name }}</p>
+          <h3 class="product-name">{{ product.name }}</h3>
+          {% if product.description %}
+            <p class="product-desc">{{ product.description|truncatewords:10 }}</p>
+          {% endif %}
+          <div class="product-footer">
+            <span class="product-price">{{ product.price }} TND</span>
+            {% if product.stock > 0 %}
+              {% if user.is_authenticated %}
+                <a href="{% url 'add_to_cart' product.id %}" class="btn-add">+ Add</a>
+              {% else %}
+                <a href="{% url 'login' %}" class="btn-add">+ Add</a>
+              {% endif %}
+            {% else %}
+              <span class="out-of-stock">Out of stock</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <p>😕 No products found in this category.</p>
+      <a href="{% url 'products' %}" class="btn-primary">Browse All</a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}
